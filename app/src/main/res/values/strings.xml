@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">milestone1</string>
+    <string name="location_button_caption">Get Location Permissions</string>
 </resources>
