@@ -7,6 +7,7 @@ import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     private Button locationButton;
+    private Button mapsButton;
     final static String TAG = "MainActivity"; // good practice for debugging
 
     @Override
@@ -50,6 +52,17 @@ public class MainActivity extends AppCompatActivity {
                         })
                         .create()
                         .show();
+            }
+        });
+
+        mapsButton = findViewById(R.id.map_button);
+        mapsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "Trying to open Google Maps");
+
+                Intent mapsIntent = new Intent(MainActivity.this, MapsActivity.class);
+                startActivity(mapsIntent);
             }
         });
     }
