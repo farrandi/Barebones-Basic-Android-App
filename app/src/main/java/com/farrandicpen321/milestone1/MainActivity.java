@@ -83,7 +83,10 @@ public class MainActivity extends AppCompatActivity {
         weatherButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d(TAG, "Trying to Open Weathers");
 
+                Intent weatherIntent = new Intent(MainActivity.this, WeatherActivity.class);
+                startActivity(weatherIntent);
             }
         });
     }
