@@ -17,7 +17,9 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     private Button locationButton;
-    private Button mapsButton;
+    private Button favCityButton;
+    private Button statusButton;
+    private Button weatherButton;
     final static String TAG = "MainActivity"; // good practice for debugging
 
     @Override
@@ -55,14 +57,33 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        mapsButton = findViewById(R.id.map_button);
-        mapsButton.setOnClickListener(new View.OnClickListener() {
+        favCityButton = findViewById(R.id.fav_city_button);
+        favCityButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "Trying to open Google Maps");
+                Log.d(TAG, "Trying to open Favourite City in Google Maps");
 
                 Intent mapsIntent = new Intent(MainActivity.this, MapsActivity.class);
                 startActivity(mapsIntent);
+            }
+        });
+
+        statusButton = findViewById(R.id.status_button);
+        statusButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "Trying to open Phone Model");
+
+                Intent statusIntent = new Intent(MainActivity.this, StatusActivity.class);
+                startActivity(statusIntent);
+            }
+        });
+
+        weatherButton = findViewById(R.id.weather_button);
+        weatherButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
             }
         });
     }

@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">milestone1</string>
     <string name="location_button_caption">Get Location Permissions</string>
-    <string name="maps_button_caption">Google Maps</string>
+    <string name="fav_city_button_caption">My Favourite City</string>
     <string name="title_activity_maps">MapsActivity</string>
+    <string name="status_button_caption">Phone Model</string>
+    <string name="weather_button_caption">Weather</string>
 </resources>
