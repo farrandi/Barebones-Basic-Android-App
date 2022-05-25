@@ -71,6 +71,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        Log.d(TAG, "Displaying favourite city");
         mMap = googleMap;
 
         LatLng tokyo = new LatLng(35.6819, 139.7705);

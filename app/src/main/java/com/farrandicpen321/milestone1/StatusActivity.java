@@ -1,19 +1,26 @@
 package com.farrandicpen321.milestone1;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.location.LocationRequest;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -50,8 +57,70 @@ public class StatusActivity extends AppCompatActivity {
                         + Build.MODEL
         ));
 
-        getLocation();
+        // check if user has allowed location permissions
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(this, "We have these Permissions yay!", Toast.LENGTH_LONG).show();
+            Log.d(TAG, "getting Location 1");
+            getLocation();
+        } else {
+            requestLocationPermission();
+            Log.d(TAG, "request permission");
+        }
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode==1) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                    && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "We have these Permissions yay!", Toast.LENGTH_LONG).show();
+                Log.d(TAG, "getting Location 1");
+                getLocation();
+            } else {
+                requestLocationPermission();
+                Log.d(TAG, "request permission");
+            }
+        }
+    }
+
+    private void requestLocationPermission() {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_COARSE_LOCATION) ||
+                ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+            Toast.makeText(StatusActivity.this, "We need these location permissions to run!", Toast.LENGTH_LONG).show();
+
+            Log.d(TAG, "Trying to Request Location Permissions"); // for debugging
+            // Toast is for pop up in phone screen
+            Toast.makeText(StatusActivity.this, "Trying to request location permissions", Toast.LENGTH_LONG).show();
+            new AlertDialog.Builder(StatusActivity.this)
+                    .setTitle("Need Location Permissions")
+                    .setMessage("We need the location permissions to mark your location on a map")
+                    .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Toast.makeText(StatusActivity.this, "We need these location permissions to run!", Toast.LENGTH_LONG).show();
+                            dialog.dismiss();
+                        }
+                    })
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            ActivityCompat.requestPermissions(StatusActivity.this, new String[] {Manifest.permission.ACCESS_COARSE_LOCATION,
+                                    Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+                            getLocation();
+                        }
+                    })
+                    .create()
+                    .show();
+        }
+        else {
+            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        }
+        return;
+    }
+
 
     private void getLocation() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -64,7 +133,8 @@ public class StatusActivity extends AppCompatActivity {
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
-        fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
+
+        fusedLocationProviderClient.getCurrentLocation(LocationRequest.QUALITY_HIGH_ACCURACY, null).addOnCompleteListener(new OnCompleteListener<Location>() {
             @Override
             public void onComplete(@NonNull Task<Location> task) {
                 // Initialize location
@@ -91,6 +161,7 @@ public class StatusActivity extends AppCompatActivity {
                                 "<font color = '36200EE'><b>Longtitude : </b><br></font>"
                                         + addressList.get(0).getLongitude()
                         ));
+//                        startActivity(getIntent());
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
