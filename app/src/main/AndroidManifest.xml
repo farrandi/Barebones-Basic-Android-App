@@ -3,13 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.farrandicpen321.milestone1">
     <!-- based off wifi -->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <!-- based off gps location -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- based off gps location -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
 
     <application
+        android:usesCleartextTraffic="true"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -19,6 +20,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Milestone1"
         tools:targetApi="31">
+        <activity
+            android:name=".ServerActivity"
+            android:exported="false" />
         <activity
             android:name=".WeatherActivity"
             android:exported="false" />
